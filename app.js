@@ -1,12 +1,5 @@
 
 const mongoose = require('mongoose');
-
-//main().catch(err => console.log(err));
-
-/* async function main() {
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-} */
 mongoose.connect('mongodb://127.0.0.1:27017/FruitsDB');
 
 const fruitSchema = new mongoose.Schema ({
@@ -17,12 +10,32 @@ const fruitSchema = new mongoose.Schema ({
 
 const Fruit = mongoose.model('Fruit', fruitSchema);
 
-const someFruit = new Fruit ({
+const apple = new Fruit ({
     name: 'Apple',
     rating: 1,
     review: 'solid'
 });
+const orange = new Fruit ({
+    name: 'Orange',
+    rating: 2,
+    review: 'sour'
+});
+const kiwi = new Fruit ({
+    name: 'Kiwi',
+    rating: 3,
+    review: 'soft'
+});
 
-console.log(someFruit.name); // 'Apple'
+//Fruit.insertMany([apple, orange, kiwi]);
 
-someFruit.save();
+Fruit.find()
+    .then(function (fruits) {
+        fruits.forEach(function (fruit) {
+            console.log(fruit.name);
+        });
+        mongoose.connection.close();
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+
